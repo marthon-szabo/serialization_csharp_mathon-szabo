@@ -26,7 +26,9 @@ namespace SerializePeople
 
         }
 
-
+        public Person()
+        {
+        }
 
         public string Name
         {
@@ -58,16 +60,27 @@ namespace SerializePeople
 
         public void Serialize(string output)
         {
-            if (File.Exists(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.txt"))
+            if (File.Exists(output))
             {
-                File.Delete(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.txt");
+                File.Delete(output);
             }
 
-            FileStream fs = new FileStream(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.txt", FileMode.Create, FileAccess.Write);
+            FileStream fs = new FileStream(output, FileMode.Create, FileAccess.Write);
             BinaryFormatter bf = new BinaryFormatter();
             
-            bf.Serialize(fs, output);
+            bf.Serialize(fs, this);
             fs.Close();
+        }
+
+        public static Person Deserialize()
+        {
+            FileStream fs = new FileStream(
+                @"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.bin",
+                FileMode.Open, FileAccess.Read);
+            BinaryFormatter bf = new BinaryFormatter();
+
+
+            return (Person)bf.Deserialize(fs);
         }
 
         public override string ToString()

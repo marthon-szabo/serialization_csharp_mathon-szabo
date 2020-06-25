@@ -11,7 +11,9 @@ namespace SerializePeople
         static void Main(string[] args)
         {
             Person person = new Person("John Doe", DateTime.Parse("1996.08.10"), Gender.MALE);
-            int age = person.Age;
+            person.Serialize(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.bin");
+            Person per = Person.Deserialize();
+            Console.WriteLine(per.ToString());
         }
     }
 }

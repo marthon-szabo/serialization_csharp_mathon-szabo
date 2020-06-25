@@ -28,17 +28,19 @@ namespace SerializePeopleTests
         }
 
         [TestMethod]
-        public void Serialize_GivenStringTest_ShouldWriteStringIntoFile()
+        public void SerializeAndDeserialize_GivenStringOutput_ShouldWriteStringIntoFile()
         {
             //Arrange
-            Person person = new Person("John Doe", DateTime.Parse("1996.08.10"), Gender.MALE);
-            string expected = "Person: [Name: John Doe, birth: 10/08/1996, gender: MALE, age23.]";
+            Person expectedPerson = new Person("John Doe", DateTime.Parse("1996.08.10"), Gender.MALE);
+            string expected = expectedPerson.ToString();
 
             //Act
-            person.Serialize(person.ToString());
-            FileStream fs = new FileStream(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.txt",
+            expectedPerson.Serialize(Path.FULL_NAME);
+            FileStream fs = new FileStream(Path.FULL_NAME,
                 FileMode.Open, FileAccess.Read);
-            string actual = (string)new BinaryFormatter().Deserialize(fs);
+            Person actualPerson = (Person)new BinaryFormatter().Deserialize(fs);
+            fs.Close();
+            string actual = actualPerson.ToString();
 
             //Assert
             Assert.AreEqual(expected, actual);
