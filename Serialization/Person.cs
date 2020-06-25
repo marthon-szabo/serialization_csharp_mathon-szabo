@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.CompilerServices;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SerializePeople
 {
@@ -53,6 +55,20 @@ namespace SerializePeople
         }
 
         public Employee Employee { get; }
+
+        public void Serialize(string output)
+        {
+            if (File.Exists(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.txt"))
+            {
+                File.Delete(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.txt");
+            }
+
+            FileStream fs = new FileStream(@"C:\Users\DELL\serialization_csharp_mathon-szabo\Test.txt", FileMode.Create, FileAccess.Write);
+            BinaryFormatter bf = new BinaryFormatter();
+            
+            bf.Serialize(fs, output);
+            fs.Close();
+        }
 
         public override string ToString()
         {
