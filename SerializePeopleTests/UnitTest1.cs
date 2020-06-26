@@ -46,5 +46,8 @@ namespace SerializePeopleTests
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void GetObjectValue_
+
     }
 }

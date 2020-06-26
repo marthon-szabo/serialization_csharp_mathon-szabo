@@ -7,15 +7,16 @@ using System.Runtime.Serialization;
 using System.Runtime.CompilerServices;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace SerializePeople
 {
     [Serializable]
     public class Person : IDeserializationCallback
     {
-        protected string name;
+        protected string _name;
         protected DateTime _birthDate;
-        protected Gender gender;
+        protected Gender _gender;
         
         [NonSerialized]
         protected int _age;
@@ -23,10 +24,10 @@ namespace SerializePeople
 
         public Person(string name, DateTime birthDate, Gender gender)
         {
-            this.name = name;
+            this._name = name;
             this._birthDate = birthDate;
             this._age = CheckAge();
-            this.gender = gender;
+            this._gender = gender;
 
         }
 
@@ -34,10 +35,21 @@ namespace SerializePeople
         {
         }
 
+        protected Person(SerializationInfo serInfo, StreamingContext context)
+        {
+            if (serInfo == null) throw new ArgumentNullException();
+
+            _name = (string)serInfo.GetValue("Name", typeof(string));
+            _birthDate = (DateTime)serInfo.GetValue("Birth", typeof(DateTime));
+            _gender = (Gender)serInfo.GetValue("Gender", typeof(Gender));
+            _age = CheckAge();
+
+        }
+
         public string Name
         {
-            get => name;
-            set => name = value;
+            get => _name;
+            set => _name = value;
         }
 
         public Gender Gender { get; }
@@ -92,13 +104,21 @@ namespace SerializePeople
 
         public override string ToString()
         {
-            return $"Person: [Name: {name}, birth: {_birthDate:dd/MM/yyyy}, gender: {gender}, age{Age}.]";
+            return $"Person: [Name: {_name}, birth: {_birthDate:dd/MM/yyyy}, gender: {_gender}, age{Age}.]";
 
         }
 
         public void OnDeserialization(object sender)
         {
             _age = CheckAge();
+        }
+
+        public void GetObjectData(SerializationInfo serInfo, StreamingContext context)
+        {
+            serInfo.AddValue("Name", _name);
+            serInfo.AddValue("Birth", _birthDate);
+            serInfo.AddValue("Gender", _gender);
+
         }
     }
     
