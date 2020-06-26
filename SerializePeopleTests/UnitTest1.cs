@@ -28,7 +28,7 @@ namespace SerializePeopleTests
         }
 
         [TestMethod]
-        public void SerializeAndDeserialize_GivenStringOutput_ShouldWriteStringIntoFile()
+        public void SerializeAndDeserialize_GivenStringOutput_ShouldWriteObjectIntoFileAndReturnIt()
         {
             //Arrange
             Person expectedPerson = new Person("John Doe", DateTime.Parse("1996.08.10"), Gender.MALE);
